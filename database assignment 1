@@ -1,0 +1,66 @@
+CREATE DATABASE Gym_Attendance_System;
+
+USE Gym_Attendance_System;
+-- MUHAMMAD UMER ( BSE-23f-254)
+CREATE TABLE Members (
+  Member_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Date_of_Birth DATE,
+  Gender VARCHAR(10),
+  Contact_Info VARCHAR(100),
+  Membership_Start_Date DATE,
+  Membership_End_Date DATE
+);
+
+CREATE TABLE Trainers (
+  Trainer_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Specialty VARCHAR(50),
+  Qualifications VARCHAR(100),
+  Availability VARCHAR(10)
+);
+
+CREATE TABLE Sessions (
+  Session_ID INT PRIMARY KEY,
+  Member_ID INT,
+  Trainer_ID INT,
+  Date_and_Time DATETIME,
+  Status VARCHAR(10),
+  FOREIGN KEY (Member_ID) REFERENCES Members(Member_ID),
+  FOREIGN KEY (Trainer_ID) REFERENCES Trainers(Trainer_ID)
+);
+
+CREATE TABLE Classes (
+  Class_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Description VARCHAR(100),
+  Trainer_ID INT,
+  Schedule VARCHAR(100),
+  FOREIGN KEY (Trainer_ID) REFERENCES Trainers(Trainer_ID)
+);
+
+CREATE TABLE Equipment (
+  Equipment_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Type VARCHAR(50),
+  Status VARCHAR(10)
+);
+
+CREATE TABLE Attendance (
+  Attendance_ID INT PRIMARY KEY,
+  Member_ID INT,
+  Date DATE,
+  Check_In_Time TIME,
+  Check_Out_Time TIME,
+  FOREIGN KEY (Member_ID) REFERENCES Members(Member_ID)
+);
+
+CREATE TABLE Payments (
+  Payment_ID INT PRIMARY KEY,
+  Member_ID INT,
+  Date DATE,
+  Amount DECIMAL(10, 2),
+  Status VARCHAR(10),
+  FOREIGN KEY (Member_ID) REFERENCES Members(Member_ID)
+);
+
