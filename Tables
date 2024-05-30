@@ -1,0 +1,203 @@
+-- Create Database
+CREATE DATABASE SIS;
+
+-- Use the newly created database
+USE SIS;
+
+-- Creating Tables
+CREATE TABLE Students (
+  Student_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Email VARCHAR(50),
+  Phone VARCHAR(20),
+  Address VARCHAR(100)
+);
+
+CREATE TABLE Courses (
+  Course_ID INT PRIMARY KEY,
+  Course_Name VARCHAR(50),
+  Credits INT,
+  Department VARCHAR(50)
+);
+
+CREATE TABLE Enrollments (
+  Enrollment_ID INT PRIMARY KEY,
+  Student_ID INT,
+  Course_ID INT,
+  Enrollment_Date DATE,
+  FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
+  FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
+);
+
+CREATE TABLE Grades (
+  Grade_ID INT PRIMARY KEY,
+  Student_ID INT,
+  Course_ID INT,
+  Assignment_Name VARCHAR(50),
+  Grade INT,
+  FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
+  FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
+);
+
+CREATE TABLE Attendance (
+  Attendance_ID INT PRIMARY KEY,
+  Student_ID INT,
+  Course_ID INT,
+  Date DATE,
+  Attendance_Status VARCHAR(10),
+  FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID),
+  FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
+);
+
+CREATE TABLE Instructors (
+  Instructor_ID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  Email VARCHAR(50),
+  Phone VARCHAR(20),
+  Department VARCHAR(50)
+);
+
+CREATE TABLE Classrooms (
+  Classroom_ID INT PRIMARY KEY,
+  Building VARCHAR(50),
+  Room_Number VARCHAR(10),
+  Capacity INT
+);
+
+CREATE TABLE Course_Schedule (
+  Schedule_ID INT PRIMARY KEY,
+  Course_ID INT,
+  Instructor_ID INT,
+  Classroom_ID INT,
+  Class_Day VARCHAR(10),
+  Start_Time TIME,
+  End_Time TIME,
+  FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID),
+  FOREIGN KEY (Instructor_ID) REFERENCES Instructors(Instructor_ID),
+  FOREIGN KEY (Classroom_ID) REFERENCES Classrooms(Classroom_ID)
+);
+
+CREATE TABLE Course_Materials (
+  Material_ID INT PRIMARY KEY,
+  Course_ID INT,
+  Title VARCHAR(100),
+  Author VARCHAR(50),
+  Type VARCHAR(30),
+  URL VARCHAR(255),
+  FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
+);
+
+CREATE TABLE Academic_Events (
+  Event_ID INT PRIMARY KEY,
+  Title VARCHAR(100),
+  Description TEXT,
+  Event_Date DATE,
+  Event_Time TIME,
+  Location VARCHAR(100)
+);
+
+
+-- Insert Data into Students
+INSERT INTO Students (Student_ID, Name, Email, Phone, Address)
+VALUES
+(1, 'John Doe', 'johndoe@example.com', '1234567890', '123 Main St'),
+(2, 'Jane Smith', 'janesmith@example.com', '9876543210', '456 Elm St'),
+(3, 'Bob Johnson', 'bobjohnson@example.com', '5678901234', '789 Oak St'),
+(4, 'Alice Brown', 'alicebrown@example.com', '2345678901', '321 Maple St'),
+(5, 'Mike Davis', 'mikedavis@example.com', '9012345678', '567 Pine St');
+
+-- Insert Data into Courses
+INSERT INTO Courses (Course_ID, Course_Name, Credits, Department)
+VALUES
+(3001, 'Introduction to Computer Science', 3, 'Computer Science'),
+(3002, 'Calculus', 4, 'Mathematics'),
+(3003, 'English Literature', 3, 'English'),
+(3004, 'Biology', 4, 'Biology'),
+(3005, 'Physics', 4, 'Physics');
+
+-- Insert Data into Enrollments
+INSERT INTO Enrollments (Enrollment_ID, Student_ID, Course_ID, Enrollment_Date)
+VALUES
+(1, 1, 3001, '2022-01-01'),
+(2, 2, 3002, '2022-01-05'),
+(3, 3, 3003, '2022-01-10'),
+(4, 4, 3004, '2022-01-15'),
+(5, 5, 3005, '2022-01-20');
+
+-- Insert Data into Grades
+INSERT INTO Grades (Grade_ID, Student_ID, Course_ID, Assignment_Name, Grade)
+VALUES
+(1, 1, 3001, 'Homework 1', 85),
+(2, 2, 3002, 'Quiz 1', 90),
+(3, 3, 3003, 'Midterm Exam', 78),
+(4, 4, 3004, 'Homework 2', 92),
+(5, 5, 3005, 'Project', 88);
+
+-- Insert Data into Attendance
+INSERT INTO Attendance (Attendance_ID, Student_ID, Course_ID, Date, Attendance_Status)
+VALUES
+(1, 1, 3001, '2022-01-01', 'Present'),
+(2, 2, 3002, '2022-01-05', 'Absent'),
+(3, 3, 3003, '2022-01-10', 'Present'),
+(4, 4, 3004, '2022-01-15', 'Late'),
+(5, 5, 3005, '2022-01-20', 'Present');
+
+-- Insert Data into Instructors
+INSERT INTO Instructors (Instructor_ID, Name, Email, Phone, Department)
+VALUES
+(101, 'Dr. Anna Lee', 'annalee@university.edu', '8001234567', 'Computer Science'),
+(102, 'Prof. Mark Neal', 'markneal@university.edu', '8002345678', 'Mathematics'),
+(103, 'Dr. Susan Choi', 'susanchoi@university.edu', '8003456789', 'Biology'),
+(104, 'Prof. James Park', 'jamespark@university.edu', '8004567890', 'English'),
+(105, 'Dr. Emily Wright', 'emilywright@university.edu', '8005678901', 'Physics');
+
+INSERT INTO Classrooms (Classroom_ID, Building, Room_Number, Capacity)
+VALUES
+(201, 'Science Hall', '101', 40),
+(202, 'Math Building', '201', 30),
+(203, 'Liberal Arts', '301', 50),
+(204, 'Engineering', '401', 35),
+(205, 'Physics Annex', '501', 25);
+
+
+INSERT INTO Courses (Course_ID, Course_Name, Credits, Department)
+VALUES
+(3001, 'Introduction to Computer Science', 3, 'Computer Science'),
+(3002, 'Calculus', 4, 'Mathematics'),
+(3003, 'English Literature', 3, 'English'),
+(3004, 'Biology', 4, 'Biology'),
+(3005, 'Physics', 4, 'Physics'),
+(3006, 'Data Structures', 3, 'Computer Science'),
+(3007, 'Algorithms', 3, 'Computer Science'),
+(3008, 'Operating Systems', 3, 'Computer Science'),
+(3009, 'Database Systems', 3, 'Computer Science'),
+(3010, 'Software Engineering', 3, 'Computer Science');
+
+
+INSERT INTO Course_Schedule (Schedule_ID, Course_ID, Instructor_ID, Classroom_ID, Class_Day, Start_Time, End_Time)
+VALUES
+(301, 3001, 101, 201, 'Monday', '09:00:00', '11:00:00'),
+(302, 3002, 102, 202, 'Tuesday', '10:00:00', '12:00:00'),
+(303, 3003, 103, 203, 'Wednesday', '08:00:00', '10:00:00'),
+(304, 3004, 104, 204, 'Thursday', '13:00:00', '15:00:00'),
+(305, 3005, 105, 205, 'Friday', '14:00:00', '16:00:00');
+
+
+INSERT INTO Course_Materials (Material_ID, Course_ID, Title, Author, Type, URL)
+VALUES
+(401, 3001, 'Introduction to Computing', 'David Evans', 'Textbook', 'https://example.com/comp_sci_book'),
+(402, 3002, 'Calculus Volume I', 'Apostol', 'Textbook', 'https://example.com/calculus_book'),
+(403, 3003, 'Biology for Beginners', 'Truman Moon', 'Textbook', 'https://example.com/biology_book'),
+(404, 3004, 'Modern English Literature', 'Mary Shelley', 'Video', 'https://example.com/english_video'),
+(405, 3005, 'Physics in Motion', 'Isaac Newton', 'Article', 'https://example.com/physics_article');
+
+
+INSERT INTO Academic_Events (Event_ID, Title, Description, Event_Date, Event_Time, Location)
+VALUES
+(501, 'Computer Science Seminar', 'A seminar on the latest trends in artificial intelligence', '2023-06-15', '10:00:00', 'Conference Room A'),
+(502, 'Mathematics Workshop', 'Workshop on advanced calculus and applications', '2023-06-20', '12:00:00', 'Math Building Room 202'),
+(503, 'Biology Guest Lecture', 'Lecture by Dr. Jane Goodall on modern genetics', '2023-06-25', '14:00:00', 'Science Hall Auditorium'),
+(504, 'English Poetry Reading', 'An afternoon of poetry reading with guest poets from around the world', '2023-06-30', '16:00:00', 'Liberal Arts Hall'),
+(505, 'Physics Symposium', 'Annual symposium on theoretical physics and quantum mechanics', '2023-07-05', '09:00:00', 'Physics Annex Lecture Hall');
+
+
