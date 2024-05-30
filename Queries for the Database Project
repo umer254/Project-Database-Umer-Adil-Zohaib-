@@ -1,0 +1,214 @@
+-- Basic SELECT Queries
+-- 1. Retrieve all student names
+SELECT Name FROM Students;
+
+-- 2. Retrieve all course names and their credits
+SELECT Course_Name, Credits FROM Courses;
+
+-- 3. Retrieve all instructor names
+SELECT Name FROM Instructors;
+
+-- JOIN Queries
+-- 4. Retrieve all enrolled students in a specific course (Course_ID = 3002)
+SELECT Students.Name FROM Students
+JOIN Enrollments ON Students.Student_ID = Enrollments.Student_ID
+WHERE Enrollments.Course_ID = 3002;
+
+-- 5. Retrieve all courses taken by a specific student (Student_ID = 3)
+SELECT Courses.Course_Name FROM Courses
+JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+WHERE Enrollments.Student_ID = 3;
+
+-- 6. Retrieve the names and emails of students who have enrolled in a specific course (Course_ID = 3003)
+SELECT Students.Name, Students.Email FROM Students
+JOIN Enrollments ON Students.Student_ID = Enrollments.Student_ID
+WHERE Enrollments.Course_ID = 3003;
+
+-- 7. Retrieve the average grade of each student
+SELECT Students.Name, AVG(Grades.Grade) AS Average_Grade FROM Students
+JOIN Grades ON Students.Student_ID = Grades.Student_ID
+GROUP BY Students.Name;
+
+-- 8. Retrieve all students along with the number of courses they have received grades for
+SELECT Students.Name, COUNT(DISTINCT Grades.Course_ID) AS Graded_Courses FROM Students
+LEFT JOIN Grades ON Students.Student_ID = Grades.Student_ID
+GROUP BY Students.Name;
+
+-- 9. Retrieve the highest grade in each course
+SELECT Courses.Course_Name, MAX(Grades.Grade) AS Highest_Grade FROM Courses
+JOIN Grades ON Courses.Course_ID = Grades.Course_ID
+GROUP BY Courses.Course_Name;
+
+-- 10. Retrieve all courses with more than 3 credits
+SELECT * FROM Courses WHERE Credits > 3;
+
+-- 11. Retrieve all students who have an email address ending with '@example.com'
+SELECT * FROM Students WHERE Email LIKE '%@example.com';
+
+-- LEFT JOIN Queries
+-- 12. Retrieve all courses with no enrolled students
+SELECT Courses.Course_Name FROM Courses
+LEFT JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+WHERE Enrollments.Course_ID IS NULL;
+
+-- 13. Retrieve the total number of students in the Students table
+SELECT COUNT(*) AS Total_Students FROM Students;
+
+-- 14. Retrieve the student who has the highest grade in a specific course (Course_ID = 3001)
+SELECT Students.Name FROM Students
+JOIN Grades ON Students.Student_ID = Grades.Student_ID
+WHERE Grades.Course_ID = 3001
+ORDER BY Grades.Grade DESC
+LIMIT 1;
+
+-- 15. Retrieve all students and their corresponding course enrollments
+SELECT Students.Name, Courses.Course_Name FROM Students
+JOIN Enrollments ON Students.Student_ID = Enrollments.Student_ID
+JOIN Courses ON Enrollments.Course_ID = Courses.Course_ID;
+
+-- 16. Retrieve all courses with their respective departments
+SELECT Course_Name, Department FROM Courses;
+
+-- 17. Retrieve all courses with their enrollment counts
+SELECT Courses.Course_Name, COUNT(Enrollments.Enrollment_ID) AS Enrollment_Count FROM Courses
+LEFT JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+GROUP BY Courses.Course_Name;
+
+-- 18. Retrieve all students who have attended a class on a specific date (2022-01-12)
+SELECT Students.Name FROM Students
+JOIN Attendance ON Students.Student_ID = Attendance.Student_ID
+WHERE Attendance.Date = '2022-01-12';
+
+-- 19. Retrieve the average grade for a specific student (Student_ID = 7) in all their courses
+SELECT AVG(Grade) AS Average_Grade FROM Grades
+WHERE Student_ID = 7;
+
+-- 20. Retrieve all students who have the same phone number
+SELECT Phone, COUNT(*) AS Count FROM Students
+GROUP BY Phone HAVING COUNT(*) > 1;
+
+-- 21. Retrieve the total number of assignments graded per course
+SELECT Course_ID, COUNT(Grade_ID) AS Total_Assignments FROM Grades
+GROUP BY Course_ID;
+
+-- 22. Retrieve the highest grade obtained by each student
+SELECT Students.Name, MAX(Grades.Grade) AS Highest_Grade FROM Students
+JOIN Grades ON Students.Student_ID = Grades.Student_ID
+GROUP BY Students.Name;
+
+-- 23. Retrieve all courses with enrollment dates after a specific date (2021-02-15)
+SELECT Courses.Course_Name FROM Courses
+JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+WHERE Enrollments.Enrollment_Date > '2021-02-15';
+
+-- 24. Retrieve all students who have a grade less than 80 in any course
+SELECT DISTINCT Students.Name FROM Students
+JOIN Grades ON Students.Student_ID = Grades.Student_ID
+WHERE Grades.Grade < 80;
+
+-- 25. Retrieve the number of students enrolled in each course department
+SELECT Courses.Department, COUNT(Enrollments.Student_ID) AS Enrolled_Students FROM Courses
+JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+GROUP BY Courses.Department;
+
+-- 26. Retrieve the total number of classes attended by each student
+SELECT Students.Name, COUNT(Attendance.Attendance_ID) AS Classes_Attended FROM Students
+JOIN Attendance ON Students.Student_ID = Attendance.Student_ID
+GROUP BY Students.Name;
+
+-- 27. Retrieve all students who have not been graded in any course
+SELECT Students.Name FROM Students
+LEFT JOIN Grades ON Students.Student_ID = Grades.Student_ID
+WHERE Grades.Student_ID IS NULL;
+
+-- 28. Retrieve the number of courses each student is enrolled in
+SELECT Students.Name, COUNT(Enrollments.Course_ID) AS Enrolled_Courses FROM Students
+JOIN Enrollments ON Students.Student_ID = Enrollments.Student_ID
+GROUP BY Students.Name;
+
+-- Additional Queries with JOINs
+-- 29. Retrieve all students who have attended a class with a specific attendance status ('Present')
+SELECT Students.Name FROM Students
+JOIN Attendance ON Students.Student_ID = Attendance.Student_ID
+WHERE Attendance.Attendance_Status = 'Present';
+
+-- 30. Retrieve the average grade for each assignment for a specific course (Course_ID = 3003)
+SELECT Assignment_Name, AVG(Grade) AS Average_Grade FROM Grades
+WHERE Course_ID = 3003
+GROUP BY Assignment_Name;
+
+-- 31. Retrieve all courses that have never been assigned a grade
+SELECT Courses.Course_Name FROM Courses
+LEFT JOIN Grades ON Courses.Course_ID = Grades.Course_ID
+WHERE Grades.Course_ID IS NULL;
+
+-- 32. Retrieve the course with the highest enrollment
+SELECT Courses.Course_Name, COUNT(Enrollments.Student_ID) AS Enrolled_Students FROM Courses
+JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+GROUP BY Courses.Course_Name
+ORDER BY Enrolled_Students DESC
+LIMIT 1;
+
+-- 33. Retrieve the students who have enrolled in all available courses
+SELECT Students.Name FROM Students
+WHERE NOT EXISTS (
+    SELECT * FROM Courses
+    WHERE NOT EXISTS (
+        SELECT * FROM Enrollments
+        WHERE Enrollments.Student_ID = Students.Student_ID
+        AND Enrollments.Course_ID = Courses.Course_ID
+    )
+);
+
+-- 34. Retrieve the course(s) with the lowest average grade
+SELECT Courses.Course_Name, AVG(Grades.Grade) AS Average_Grade FROM Courses
+JOIN Grades ON Courses.Course_ID = Grades.Course_ID
+GROUP BY Courses.Course_Name
+ORDER BY Average_Grade ASC
+LIMIT 1;
+
+-- 35. Retrieve the students who have not attended any class in a specific course (Course_ID = 3004)
+SELECT Students.Name FROM Students
+LEFT JOIN Attendance ON Students.Student_ID = Attendance.Student_ID
+WHERE Attendance.Course_ID = 3004 AND Attendance.Student_ID IS NULL;
+
+-- 36. Retrieve the course with the most assignments
+SELECT Courses.Course_Name, COUNT(Grades.Assignment_Name) AS Assignment_Count FROM Courses
+JOIN Grades ON Courses.Course_ID = Grades.Course_ID
+GROUP BY Courses.Course_Name
+ORDER BY Assignment_Count DESC
+LIMIT 1;
+
+-- 37. Retrieve the courses where all students have attended classes
+SELECT Courses.Course_Name FROM Courses
+JOIN Enrollments ON Courses.Course_ID = Enrollments.Course_ID
+JOIN Attendance ON Enrollments.Student_ID = Attendance.Student_ID
+GROUP BY Courses.Course_Name
+HAVING COUNT(DISTINCT Enrollments.Student_ID) = (SELECT COUNT(*) FROM Students);
+
+-- 38. Retrieve the names of students along with the total number of grades they have received
+SELECT Students.Name, COUNT(Grades.Grade_ID) AS Total_Grades FROM Students
+LEFT JOIN Grades ON Students.Student_ID = Grades.Student_ID
+GROUP BY Students.Name;
+
+-- 39. Retrieve the names of students whose names contain a specific substring (e.g., 'John') using LIKE
+SELECT Name FROM Students
+WHERE Name LIKE '%John%';
+
+-- 40. Retrieve the students who have the same address
+SELECT Address, COUNT(*) AS Count FROM Students
+GROUP BY Address HAVING COUNT(*) > 1;
+
+-- 41. Retrieve the total number of students who have received grades within a specified range (e.g., between 80 and 90) using BETWEEN
+SELECT COUNT(DISTINCT Student_ID) AS Students_In_Range FROM Grades
+WHERE Grade BETWEEN 80 AND 90;
+
+-- 42. Retrieve the courses with the highest average grade
+SELECT Courses.Course_Name, AVG(Grades.Grade) AS Average_Grade FROM Courses
+JOIN Grades ON Courses.Course_ID = Grades.Course_ID
+GROUP BY Courses.Course_Name
+ORDER BY Average_Grade DESC;
+
+-- 43. Retrieve the students who have the same name
+SELECT Name, COUNT(*) AS Count FROM Students
+GROUP BY Name HAVING COUNT(*) > 1;
