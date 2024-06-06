@@ -100,11 +100,11 @@ CREATE TABLE Academic_Events (
 -- Insert Data into Students
 INSERT INTO Students (Student_ID, Name, Email, Phone, Address)
 VALUES
-(1, 'John Doe', 'johndoe@example.com', '1234567890', '123 Main St'),
-(2, 'Jane Smith', 'janesmith@example.com', '9876543210', '456 Elm St'),
-(3, 'Bob Johnson', 'bobjohnson@example.com', '5678901234', '789 Oak St'),
-(4, 'Alice Brown', 'alicebrown@example.com', '2345678901', '321 Maple St'),
-(5, 'Mike Davis', 'mikedavis@example.com', '9012345678', '567 Pine St');
+(1, 'ahmed', 'ahmed@example.com', '1234567890', '123 Main St'),
+(2, 'ali', 'ali@example.com', '9876543210', '456 Elm St'),
+(3, 'kashif', 'kashif@example.com', '5678901234', '789 Oak St'),
+(4, 'awais', 'awais@example.com', '2345678901', '321 Maple St'),
+(5, 'sameer', 'sameer@example.com', '9012345678', '567 Pine St');
 
 -- Insert Data into Courses
 INSERT INTO Courses (Course_ID, Course_Name, Credits, Department)
