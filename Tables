@@ -118,11 +118,11 @@ VALUES
 -- Insert Data into Enrollments
 INSERT INTO Enrollments (Enrollment_ID, Student_ID, Course_ID, Enrollment_Date)
 VALUES
-(1, 1, 3001, '2022-01-01'),
-(2, 2, 3002, '2022-01-05'),
-(3, 3, 3003, '2022-01-10'),
-(4, 4, 3004, '2022-01-15'),
-(5, 5, 3005, '2022-01-20');
+(1, 1, 3001, '2024-01-01'),
+(2, 2, 3002, '2024-01-05'),
+(3, 3, 3003, '2024-01-10'),
+(4, 4, 3004, '2024-01-15'),
+(5, 5, 3005, '2024-01-20');
 
 -- Insert Data into Grades
 INSERT INTO Grades (Grade_ID, Student_ID, Course_ID, Assignment_Name, Grade)
